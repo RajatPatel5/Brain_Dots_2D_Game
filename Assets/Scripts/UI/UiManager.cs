@@ -28,16 +28,8 @@ public class UiManager : MonoBehaviour
 
     private void Update()
     {
-        //if (PopUp.Count != 0)
-        //{
-
-        //    PopUp.Peek().TackInput();
-        //}
-
         
-            _currentScreen.TackInput();
-
-        
+        _currentScreen.TackInput();
 
     }
     public void SwitchScreen(GameScreens screen)
@@ -53,18 +45,4 @@ public class UiManager : MonoBehaviour
 
         }
     }
-    //public void OpenPopUp(GamePopUp popUp)
-    //{
-    //    foreach (BasePopUp basePopUp in _popUps)
-    //    {
-    //        if (basePopUp.popUp == popUp)
-    //        {
-    //            PopUp.Push(basePopUp);
-    //            basePopUp.ActivatePopUp();
-    //        }
-
-    //    }
-    //}
-    //public void ClosePopUp() => PopUp?.Pop().DeactivatePopUp();
-
 }

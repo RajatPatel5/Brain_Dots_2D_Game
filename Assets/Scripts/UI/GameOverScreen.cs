@@ -1,22 +1,27 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 using UnityEngine.SceneManagement;
 
 public class GameOverScreen : BaseScreen
-{ 
+{
     [SerializeField] Button _restartButton;
     [SerializeField] Button _nextButton;
-    //[SerializeField] Button _exitButton;
+    [SerializeField] private GameScreen gameScreen;
+    [SerializeField] private HomeScreen homeScreen;
+    //[SerializeField] Button _homeButton;
+
 
     private void Start()
     {
+        // Add listeners to buttons
         _restartButton.onClick.AddListener(Restart);
-         _nextButton.onClick.AddListener(Next);
-       // _exitButton.onClick.AddListener(OnExit);
+        _nextButton.onClick.AddListener(Next);
+       // _homeButton.onClick.AddListener(DisplayHomeScreen);
     }
+
     public override void ActivateScreen()
     {
-      //  AudioManager.instance.PlayInBackGround(SoundName.HomeScreenSound);
         base.ActivateScreen();
     }
 
@@ -24,33 +29,26 @@ public class GameOverScreen : BaseScreen
     {
         base.DeactivateScreen();
     }
+
     public void Restart()
     {
-        // AudioManager.instance.Play(SoundName.ButtonSound);
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
-        Debug.Log("Restart");
+        LevelManager.instance.ResetLevel1();
+        Debug.Log("restart Press");
     }
+
     public void Next()
     {
-        //// Get the index of the current scene
-        //int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
-        //// Calculate the index of the next scene
-        //int nextSceneIndex = currentSceneIndex + 1;
-
-        //// Load the next scene
-        //SceneManager.LoadScene(nextSceneIndex);
-
-        //Debug.Log("Next Screen index:" + nextSceneIndex);
-
-        //Debug.Log("Next Level ");
-        SceneControllerScript.instance.NextLevel();
+        //if (levelManager != null)
+        //{
+        //    levelManager.OnLevelCleared();
+        //    Debug.Log("Pressed");
+        //}
     }
 
-    void OnExit()
-    {
-        //  UiManager.instance.OpenPopUp(GamePopUp.SoundSetting);
-        Application.Quit();
-    }
+    //void DisplayHomeScreen()
+    //{
+    //    homeScreen.enabled = true;
+    //    Debug.Log("Homebtn");
+    //}
+    
 }

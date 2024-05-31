@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,6 @@ public class HomeScreen : BaseScreen
         //_settingButton.onClick.AddListener(OnSetting);
 
         lines.enabled = false;
-       
     }
      public override void ActivateScreen()
     {
@@ -34,16 +34,16 @@ public class HomeScreen : BaseScreen
         //lines.Ball2.isKinematic = true;
         UiManager.instance.SwitchScreen(GameScreens.Game);
         lines.enabled = true;
-       
-     
     }
     void OnExit()
     {
-        //AudioManager.instance.Play(SoundName.ButtonSound);
+        //AudioManager.instance.Play(SousndName.ButtonSound);
 
         Application.Quit();
     }
-    //void OnSetting(){
-    //  //  UiManager.instance.OpenPopUp(GamePopUp.SoundSetting);
+    //private IEnumerator StartGameplay()
+    //{
+    //    yield return new WaitForSeconds(1f);
+    //    lines.enabled = true;
     //}
 }

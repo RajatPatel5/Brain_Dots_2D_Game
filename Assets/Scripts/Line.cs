@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class Line : MonoBehaviour {
+public class Line : MonoBehaviour
+{
 
 	public LineRenderer lineRenderer;
 	public EdgeCollider2D edgeCollider;
@@ -10,7 +11,6 @@ public class Line : MonoBehaviour {
 	[HideInInspector] public List<Vector2> points = new List<Vector2> ( );
 	[HideInInspector] public int pointsCount = 0;
 
-	//The minimum distance between line's points.
 	float pointsMinDistance = 0.1f;
 
 	//Circle collider added to each line's point
@@ -29,11 +29,11 @@ public class Line : MonoBehaviour {
 		CircleCollider2D circleCollider = this.gameObject.AddComponent <CircleCollider2D> ( );
 		circleCollider.offset = newPoint;
 		circleCollider.radius = circleColliderRadius;
-
+		
 		//Line Renderer
 		lineRenderer.positionCount = pointsCount;
 		lineRenderer.SetPosition ( pointsCount - 1, newPoint );
-
+		 
 		//Edge Collider
 		//Edge colliders accept only 2 points or more (we can't create an edge with one point :D )
 		if ( pointsCount > 1 )
@@ -49,8 +49,6 @@ public class Line : MonoBehaviour {
 	{
 		// isKinematic = true  means that this rigidbody is not affected by Unity's physics engine
 		rigidBody.isKinematic = !usePhysics;
-
-
 	}
 
 	public void SetPointsMinDistance ( float distance )
