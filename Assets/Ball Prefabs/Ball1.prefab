@@ -99,7 +99,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 0.4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -161,6 +161,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605b45e83fcf9401a96fdb89b61f51dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linesdrawer: {fileID: 0}
-  gameOverScreen: {fileID: 376460346406063472, guid: ac6f8e4f3930a46d99b449c6f3da44fb, type: 3}
-  GameOverCanvas: {fileID: 0}

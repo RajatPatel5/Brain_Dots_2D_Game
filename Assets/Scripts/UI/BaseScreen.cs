@@ -19,9 +19,4 @@ public class BaseScreen : MonoBehaviour
     {
         canvas.enabled = false;
     }
-
-    public virtual void TackInput()
-    {
-
-    }
 }

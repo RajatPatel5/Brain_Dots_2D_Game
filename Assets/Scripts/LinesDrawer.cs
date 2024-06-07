@@ -1,61 +1,59 @@
-﻿using UnityEngine;
-using TMPro;
-using System;
+using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+using UnityEngine.UI;
 
 public class LinesDrawer : MonoBehaviour
 {
     public GameObject linePrefab;
     public LayerMask cantDrawOverLayer;
-    int cantDrawOverLayerIndex;
+    private int cantDrawOverLayerIndex;
     public float linePointsMinDistance;
     public float lineWidth;
     public Rigidbody2D Ball1 { get; private set; }
     public Rigidbody2D Ball2 { get; private set; }
-    public float baseMassPerPoint = 0.2f; // Base mass per point
-    public int maxAttempts = 10; // Maximum attempts allowed
-    private int remainingAttempts; // Remaining attempts
-    private int currentAttempt = 0; // Current attempt count
-    public TextMeshProUGUI attemptsText; // Reference to TextMeshPro UI component
-    Line currentLine;
-    Camera cam;
-
-    // List to store all lines
+    public float baseMassPerPoint = 0.2f;
+    private Line currentLine;
+    private Camera cam;
+    private Vector2 lastMousePosition;
+    private int lastUpdatePoint = 0;
     private List<Line> lines = new List<Line>();
+
+    public delegate void UpdateInkSliderDelegate(int pointsToAdd);
+    public static event UpdateInkSliderDelegate updateInkSlider;
+
+    public delegate void ResetInkSlider();
+    public static event ResetInkSlider resetInkSlider;
+
 
     private void Awake()
     {
         Application.targetFrameRate = 60;
     }
-    void Start()
+
+    private void Start()
     {
         cam = Camera.main;
         cantDrawOverLayerIndex = LayerMask.NameToLayer("ballLayer");
-        remainingAttempts = maxAttempts;
-        //UpdateAttemptsText();
-        StartCoroutine(UpdateAttemptsText1());
+
+        updateInkSlider?.Invoke(lastUpdatePoint);
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetMouseButtonDown(0) && remainingAttempts > 0)
+        if (Input.GetMouseButtonDown(0))
         {
-            BeginDraw();
+            LineInstatiation();
         }
-
-        if (currentLine != null )
+        if (currentLine != null)
         {
             Draw();
         }
-
-        if (Input.GetMouseButtonUp(0) )
-        {
-            EndDraw();
-        }
+        //if (Input.GetMouseButtonUp(0))
+        //{
+        //    EndDraw();
+        //}
     }
 
-    // Method to set ball references at runtime
     public void SetBalls(Rigidbody2D ball1Rigidbody, Rigidbody2D ball2Rigidbody)
     {
         Ball1 = ball1Rigidbody;
@@ -63,74 +61,65 @@ public class LinesDrawer : MonoBehaviour
 
         Ball1.isKinematic = true;
         Ball2.isKinematic = true;
-        Debug.Log("in setballs ");
+        Debug.Log("Balls have been set.");
     }
 
-    // Begin Draw
-    void BeginDraw()
+    private void LineInstatiation()
     {
         currentLine = Instantiate(linePrefab, this.transform).GetComponent<Line>();
-
-        // Set line properties
-        currentLine.UsePhysics(false);
+        currentLine.rigidBody.isKinematic = true;
         currentLine.SetPointsMinDistance(linePointsMinDistance);
         currentLine.SetLineWidth(lineWidth);
-        currentAttempt++;
-        remainingAttempts = maxAttempts - currentAttempt;
-        //UpdateAttemptsText();
-        StartCoroutine(UpdateAttemptsText1());
+        lastMousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
+
+        updateInkSlider?.Invoke(lastUpdatePoint);
     }
 
-    // Draw 
-    void Draw()
+    private void Draw()
     {
-         Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
-        // Check if mousePos hits any collider with layer "CantDrawOver", if true cut the line by calling EndDraw()
+        Vector2 mousePosition = cam.ScreenToWorldPoint(Input.mousePosition);
         if (Physics2D.CircleCast(mousePosition, lineWidth / 3f, Vector2.zero, 0f, cantDrawOverLayer))
         {
             EndDraw();
-            Debug.Log("Layerhit" + cantDrawOverLayer);
         }
-        else
+        else if (currentLine != null && Input.GetMouseButtonUp(0))
         {
-            currentLine.AddPoint(mousePosition);
+            EndDraw();
+        }
+        else 
+        {
+            if (mousePosition != lastMousePosition)
+            {
+                currentLine.AddPoint(mousePosition);
+                lastUpdatePoint++;
+                lastMousePosition = mousePosition;
+                if (lastUpdatePoint > 0)
+                {
+                    updateInkSlider?.Invoke(lastUpdatePoint);
+                    lastUpdatePoint = -1;
+                }
+            }
         }
     }
 
-    void EndDraw()
+    private void EndDraw()
     {
         if (currentLine != null)
         {
-            if (currentLine.pointsCount < 2)
-            {
-                Destroy(currentLine.gameObject);
-            }
-            else
-            {
-                // Add the line to "CantDrawOver" layer
-                currentLine.gameObject.layer = cantDrawOverLayerIndex;
-                // Activate Physics on the line
-                currentLine.UsePhysics(true);
-                // Set the mass of the line based on the number of points
-                currentLine.SetMass(baseMassPerPoint * currentLine.pointsCount * 2f);
-                // Add the line to the list
-                lines.Add(currentLine);
-                currentLine = null;
-            }
-            // Make the balls dynamic again
+            currentLine.gameObject.layer = cantDrawOverLayerIndex;
+            currentLine.rigidBody.isKinematic = false;
+            currentLine.SetMass(baseMassPerPoint * currentLine.pointsCount);
+            lines.Add(currentLine);
+            currentLine = null;
             Ball1.isKinematic = false;
             Ball2.isKinematic = false;
         }
     }
 
-    // Reset level by resetting attempts count and updating UI
     public void ResetLine()
     {
-        remainingAttempts = maxAttempts;
-        currentAttempt = 0;
-        // UpdateAttemptsText();
-        StartCoroutine(UpdateAttemptsText1());
-        // Destroy all existing lines from the list
+        resetInkSlider?.Invoke();
+        updateInkSlider?.Invoke(lastUpdatePoint);
         foreach (Line line in lines)
         {
             Destroy(line.gameObject);
@@ -138,32 +127,9 @@ public class LinesDrawer : MonoBehaviour
         lines.Clear();
     }
 
-    private IEnumerator UpdateAttemptsText1()
+    public void BallsKinematic()
     {
-        yield return new WaitForSeconds(0.2f);
-
-        if (attemptsText != null)
-        {
-            attemptsText.text = remainingAttempts.ToString();
-
-            // Check if remaining attempts are zero
-            if (remainingAttempts <= 0)
-            {
-                // Call a method to restart the game
-                LevelManager.instance.ResetLevel1();
-            }
-        }
-
+        Ball1.isKinematic = true;
+        Ball2.isKinematic = true;
     }
 }
-
-
-
-//EndDraw phy
-// Convert world space points to local space and set to EdgeCollider2D
-//Vector2[] localPoints = new Vector2[currentLine.pointsCount];
-//for (int i = 0; i < currentLine.pointsCount; i++)
-//{
-//    localPoints[i] = currentLine.transform.InverseTransformPoint(currentLine.points[i]);
-//}
-//currentLine.edgeCollider.points = localPoints;

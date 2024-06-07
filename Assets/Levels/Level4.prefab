@@ -95,11 +95,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 812278707622818158}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 2
+  m_Mass: 0.4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -161,8 +161,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605b45e83fcf9401a96fdb89b61f51dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameOverScreen: {fileID: 0}
-  gameScreen: {fileID: 0}
 --- !u!1 &1375304804567376685
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +303,7 @@ GameObject:
   - component: {fileID: 2800996750270784556}
   - component: {fileID: 3630149459249321481}
   - component: {fileID: 8591902969145311349}
+  - component: {fileID: 5575492073788090903}
   m_Layer: 3
   m_Name: Ball2
   m_TagString: Ball2
@@ -387,11 +386,11 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3908796669995618220}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.4
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -441,6 +440,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &5575492073788090903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3908796669995618220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f84555e8c0de481394cf72051050748, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4071384132104296199
 GameObject:
   m_ObjectHideFlags: 0
@@ -840,6 +851,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5175556612340615118}
+  - component: {fileID: 7134270397538113543}
   m_Layer: 3
   m_Name: Level4
   m_TagString: Untagged
@@ -868,3 +880,17 @@ Transform:
   - {fileID: 6011106516886588060}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7134270397538113543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9073578977539073779}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4816ff76b713b496cbdff6ca5a064560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ball1: {fileID: 812278707622818158}
+  ball2: {fileID: 3908796669995618220}
