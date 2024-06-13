@@ -11,13 +11,13 @@ public class GameScreen : BaseScreen
     private void OnEnable()
     {
         LinesDrawer.updateInkSlider += UpdateInkSlider;
-        LinesDrawer.resetInkSlider += ResetSliderValue;
+        //LinesDrawer.resetInkSlider += ResetSliderValue;
     }
 
     private void OnDisable()
     {
         LinesDrawer.updateInkSlider -= UpdateInkSlider;
-        LinesDrawer.resetInkSlider -= ResetSliderValue;
+       // LinesDrawer.resetInkSlider -= ResetSliderValue;
     }
 
     private void Start()
@@ -48,12 +48,13 @@ public class GameScreen : BaseScreen
         if (inkSlider.value >= inkSlider.maxValue)
         {
             UiManager.instance.SwitchScreen(GameScreens.Restart);
+            inkSlider.value = 0;
             LevelManager.instance.ResetLevel();
         }
     }
 
-    private void ResetSliderValue()
-    {
-        inkSlider.value = 0;
-    }
+    //private void ResetSliderValue()
+    //{
+    //    inkSlider.value = 0;
+    //}
 }

@@ -10,6 +10,7 @@ public class BaseScreen : MonoBehaviour
         canvas = GetComponent<Canvas>();
 
     }
+
     public virtual void ActivateScreen()
     {
         canvas.enabled = true;

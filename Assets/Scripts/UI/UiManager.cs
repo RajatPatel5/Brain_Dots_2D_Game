@@ -11,25 +11,25 @@ public enum GameScreens
 
 public class UiManager : MonoBehaviour
 {
-    [SerializeField] BaseScreen _currentScreen;
+    [SerializeField] BaseScreen currentScreen;
     public static UiManager instance;
-    [SerializeField] List<BaseScreen> _screens;
+    [SerializeField] List<BaseScreen> screens;
 
     private void Start()
     {
         instance = this;
-        _currentScreen.ActivateScreen();
+        currentScreen.ActivateScreen();
     }
 
     public void SwitchScreen(GameScreens screen)
     {
-        foreach (BaseScreen baseScreen in _screens)
+        foreach (BaseScreen baseScreen in screens)
         {
             if (baseScreen.screen == screen)
             {
                 baseScreen.ActivateScreen();
-                _currentScreen.DeactivateScreen();
-                _currentScreen = baseScreen;
+                currentScreen.DeactivateScreen();
+                currentScreen = baseScreen;
             }
         }
     }

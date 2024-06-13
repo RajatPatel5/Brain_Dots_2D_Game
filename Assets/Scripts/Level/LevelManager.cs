@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public List<GameObject> levelPrefabs;
     private int currentLevelIndex = 0;
     private GameObject currentLevel;
-    public GameObject environmentParent;
+    [SerializeField] private GameObject environmentParent;
     [SerializeField] private LinesDrawer linesdrawer;
     public LevelMenu levelmenu;
 
@@ -20,12 +19,12 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        BallCollisionDetection.gameOver += GameOverScreenFunction;
+        BallCollisionDetection.gameOver += GameOverFunction;
     }
 
     private void OnDisable()
     {
-        BallCollisionDetection.gameOver -= GameOverScreenFunction;
+        BallCollisionDetection.gameOver -= GameOverFunction;
     }
 
     private void Update()
@@ -84,7 +83,6 @@ public class LevelManager : MonoBehaviour
         }
         LoadLevel(currentLevelIndex);
         linesdrawer.ResetLine();
-        Debug.Log("Reset");
     }
 
     public void LoadSpecificLevel(int levelIndex)
@@ -98,12 +96,11 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex = levelIndex;
             LoadLevel(currentLevelIndex);
             linesdrawer.ResetLine();
-            linesdrawer.enabled = true;
-            Debug.Log("Loaded specific level: " + levelIndex);
+            Debug.Log("level Index: " + levelIndex);
         }
     }
 
-    public void GameOverScreenFunction()
+    public void GameOverFunction()
     {
         linesdrawer.enabled = false;
         linesdrawer.BallsKinematic();

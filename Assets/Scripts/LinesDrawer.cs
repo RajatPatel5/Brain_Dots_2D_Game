@@ -21,8 +21,8 @@ public class LinesDrawer : MonoBehaviour
     public delegate void UpdateInkSliderDelegate(int pointsToAdd);
     public static event UpdateInkSliderDelegate updateInkSlider;
 
-    public delegate void ResetInkSlider();
-    public static event ResetInkSlider resetInkSlider;
+    //public delegate void ResetInkSlider();
+    //public static event ResetInkSlider resetInkSlider;
 
 
     private void Awake()
@@ -48,10 +48,10 @@ public class LinesDrawer : MonoBehaviour
         {
             Draw();
         }
-        //if (Input.GetMouseButtonUp(0))
-        //{
-        //    EndDraw();
-        //}
+        if (Input.GetMouseButtonUp(0))
+        {
+            EndDraw();
+        }
     }
 
     public void SetBalls(Rigidbody2D ball1Rigidbody, Rigidbody2D ball2Rigidbody)
@@ -82,10 +82,7 @@ public class LinesDrawer : MonoBehaviour
         {
             EndDraw();
         }
-        else if (currentLine != null && Input.GetMouseButtonUp(0))
-        {
-            EndDraw();
-        }
+
         else 
         {
             if (mousePosition != lastMousePosition)
@@ -118,8 +115,8 @@ public class LinesDrawer : MonoBehaviour
 
     public void ResetLine()
     {
-        resetInkSlider?.Invoke();
-        updateInkSlider?.Invoke(lastUpdatePoint);
+        //resetInkSlider?.Invoke();
+       // updateInkSlider?.Invoke(lastUpdatePoint);
         foreach (Line line in lines)
         {
             Destroy(line.gameObject);
